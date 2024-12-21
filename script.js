@@ -1,12 +1,45 @@
+const container = document.getElementById('container');
+const registerBtn = document.getElementById('register');
+const loginBtn = document.getElementById('login');
+const scatteredAlphabetContainer = document.getElementById('scattered-alphabet');
+
+// Toggle between Sign In and Sign Up forms
+registerBtn.addEventListener('click', () => {
+    container.classList.add("active");
+});
+
+loginBtn.addEventListener('click', () => {
+    container.classList.remove("active");
+});
+
+// Highlight letters based on email input
+function highlightEmail(inputElement) {
+    const scatteredLetters = document.querySelectorAll('.scattered-letter');
+
+    inputElement.addEventListener('input', function () {
+        const inputValue = this.value.split('@')[0].toUpperCase(); // Extract text before "@"
+
+        // Reset all highlights
+        scatteredLetters.forEach(letter => letter.classList.remove('highlight'));
+
+        // Highlight letters sequentially based on input
+        inputValue.split('').forEach(char => {
+            for (let i = 0; i < scatteredLetters.length; i++) {
+                const letter = scatteredLetters[i];
+                if (letter.textContent === char && !letter.classList.contains('highlight')) {
+                    letter.classList.add('highlight');
+                    break; // Exit the loop after highlighting one matching letter
+                }
+            }
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const scatteredAlphabetContainer = document.getElementById('scattered-alphabet');
-    const container = document.querySelector('.container');
-
-    // Get container dimensions for collision detection
     const containerRect = container.getBoundingClientRect();
-    const margin = 50; // Safe margin to prevent overlap
-    const letterSize = 60; // Approximate size of each letter (adjust based on styling)
+    const margin = 50;
+    const letterSize = 60;
 
     const letters = [];
 
@@ -31,9 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         span.style.top = `${randomTop}px`;
         span.style.left = `${randomLeft}px`;
 
-        // Assign random velocities
         const velocity = {
-            x: (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1), // Random speed between -3 and 3
+            x: (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1),
             y: (Math.random() * 2 + 1) * (Math.random() < 0.5 ? -1 : 1),
         };
 
@@ -41,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scatteredAlphabetContainer.appendChild(span);
     });
 
-    // Animation loop
     function animate() {
         letters.forEach(letter => {
             let { element, x, y, velocity } = letter;
@@ -49,26 +80,23 @@ document.addEventListener('DOMContentLoaded', () => {
             let newX = x + velocity.x;
             let newY = y + velocity.y;
 
-            // Detect collision with viewport edges
             if (newX <= 0 || newX + letterSize >= window.innerWidth) {
-                velocity.x *= -1; // Reverse direction
+                velocity.x *= -1;
             }
             if (newY <= 0 || newY + letterSize >= window.innerHeight) {
-                velocity.y *= -1; // Reverse direction
+                velocity.y *= -1;
             }
 
-            // Detect collision with container
             if (
                 newX + letterSize > containerRect.left &&
                 newX < containerRect.right &&
                 newY + letterSize > containerRect.top &&
                 newY < containerRect.bottom
             ) {
-                velocity.x *= -1; // Reverse direction
+                velocity.x *= -1;
                 velocity.y *= -1;
             }
 
-            // Update position
             letter.x = newX;
             letter.y = newY;
 
@@ -76,31 +104,15 @@ document.addEventListener('DOMContentLoaded', () => {
             element.style.top = `${newY}px`;
         });
 
-        // Schedule next frame
         requestAnimationFrame(animate);
     }
 
-    animate(); // Start animation
-});
+    animate();
 
-// Highlight letters based on input
-document.getElementById('name').addEventListener('input', function () {
-    const scatteredLetters = document.querySelectorAll('.scattered-letter');
-    const inputValue = this.value.toUpperCase(); // Get the input value in uppercase
-    console.log("Input value:", inputValue);
+    // Attach email input highlighting
+    const signInEmail = document.querySelector('.sign-in input[type="email"]');
+    const signUpEmail = document.querySelector('.sign-up input[type="email"]');
 
-    // Reset all highlights
-    scatteredLetters.forEach(letter => letter.classList.remove('highlight'));
-
-    // Highlight letters sequentially based on input
-    inputValue.split('').forEach(char => {
-        for (let i = 0; i < scatteredLetters.length; i++) {
-            const letter = scatteredLetters[i];
-            if (letter.textContent === char && !letter.classList.contains('highlight')) {
-                letter.classList.add('highlight');
-                console.log(`Highlighted: ${letter.textContent}`);
-                break; // Exit the loop after highlighting one matching letter
-            }
-        }
-    });
+    if (signInEmail) highlightEmail(signInEmail);
+    if (signUpEmail) highlightEmail(signUpEmail);
 });
