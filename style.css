@@ -1,0 +1,180 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #444;
+    text-align: center;
+}
+
+/* Container */
+.container {
+    position: relative;
+    z-index: 1; /* Ensure the container is above the scattered letters */
+    display: inline-block;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Increase the max-width */
+    width: 100%;
+    background-color: white; /* Add background color to hide scattered letters */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    margin-top: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background-color: #495057;
+}
+
+/* Alphabet Line */
+.alphabet-line {
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.alphabet-line span {
+    padding: 0 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.highlight {
+    color: lawngreen !important; /* Force the color change */
+    font-size: 3rem; /* Make it significantly larger for emphasis */
+    transform: scale(1.5) rotate(10deg); /* Add rotation and scale for visibility */
+    text-shadow: 0px 0px 10px lawngreen; /* Add glow effect */
+    /*transition: all 0.5s ease-in-out; Smooth animation */
+}
+
+
+#scattered-alphabet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0; /* Place below the container */
+}
+
+.scattered-letter {
+    font-size: 7rem; /* Adjust size as needed */
+    font-weight: bold;
+    color: #000; /* Base color */
+    text-shadow: 
+        2px 2px 0 #fff, /* Highlight color */
+        4px 4px 0 #ccc, /* Shadow color */
+        6px 6px 0 #999; /* Deep shadow for 3D effect */
+    position: absolute;
+    transform: rotate(var(--random-angle, 0deg)); /* Random rotations */
+    font-family: 'Bangers', sans-serif; /* Use a similar font */
+}
+
+/* Add some random rotation for scattered effect */
+.scattered-letter {
+    --random-angle: calc(360deg * var(--random));
+}
+
+
+/* Container */
+.container {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    background-color: white;
+}
+
+/* Ensure no letters appear in the container area */
+#scattered-alphabet span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Scattered letters surround the container */
+.scattered-letter {
+    position: absolute;
+    top: calc(-10vh + (120vh * var(--random-top))); /* Ensure letters go outside the container vertically */
+    left: calc(-10vw + (120vw * var(--random-left))); /* Ensure letters go outside the container horizontally */
+}
